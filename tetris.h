@@ -3,33 +3,33 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <stdio.h>
-#include <Windows.h	>
+#include <Windows.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <mmsystem.h> //À½¾Ç Àç»ıÀ» À§ÇÑ ¶óÀÌºê·¯¸®
+#include <mmsystem.h> //ìŒì•… ì¬ìƒì„ ìœ„í•œ ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 #pragma comment(lib,"winmm.lib")
 
-enum {LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, SPACEBAR = 32, ARROW = 224, p = 112, P = 80, ESC = 27}; //Å°º¸µå ¹æÇâÅ° ¾Æ½ºÅ°ÄÚµå
+enum {LEFT = 75, RIGHT = 77, UP = 72, DOWN = 80, SPACEBAR = 32, ARROW = 224, p = 112, P = 80, ESC = 27}; //í‚¤ë³´ë“œ ë°©í–¥í‚¤ ì•„ìŠ¤í‚¤ì½”ë“œ
 enum {GRAY = 7, BLUE = 9, GREEN = 10, SKY_BLUE = 11, RED = 12, PURPLE = 13, YELLOW = 14, WHITE = 15};
 
-enum {WIDTH = 12, HEIGHT = 22}; // º¸µåÆÇ °¡·Î ¼¼·Î (º® Á¦¿Ü 10 x 20)
-#define BOARD_X 4 //º¸µåÆÇ Ãâ·ÂÇÒ ¶§ ¾à°£ÀÇ ¿©¹éÀ» µÎ±â À§ÇÔ
+enum {WIDTH = 12, HEIGHT = 22}; // ë³´ë“œíŒ ê°€ë¡œ ì„¸ë¡œ (ë²½ ì œì™¸ 10 x 20)
+#define BOARD_X 4 //ë³´ë“œíŒ ì¶œë ¥í•  ë•Œ ì•½ê°„ì˜ ì—¬ë°±ì„ ë‘ê¸° ìœ„í•¨
 #define BOARD_Y 5
-#define BLOCK_MAX 4 //Å×Æ®¸®½º ºí·° °¡·Î, ¼¼·Î 4x4 ¹è¿­ÀÓ
+#define BLOCK_MAX 4 //í…ŒíŠ¸ë¦¬ìŠ¤ ë¸”ëŸ­ ê°€ë¡œ, ì„¸ë¡œ 4x4 ë°°ì—´ì„
 
 #define EMPTY 0
-#define PLAY_EMPTY 100 //º¹»çµÈ º¸µåÆÇ ÃÊ±â°ª
-#define BLOCK 1 //ºí·Ï ¼ıÀÚ ÁöÁ¤
-#define WALL 2 //º® ¼ıÀÚ ÁöÁ¤
-#define FIXED_BLOCK 3 //°íÁ¤µÈ ºí·Ï ¼ıÀÚ ÁöÁ¤
-#define CEILING 4 //ÃµÀå ¼ıÀÚ ÁöÁ¤
-#define EFFECT 5 //ºí·Ï »ç¶óÁú ¶§ º°¸ğ¾çÀ¸·Î »ç¶óÁö´Â ÀÌÆåÆ®
+#define PLAY_EMPTY 100 //ë³µì‚¬ëœ ë³´ë“œíŒ ì´ˆê¸°ê°’
+#define BLOCK 1 //ë¸”ë¡ ìˆ«ì ì§€ì •
+#define WALL 2 //ë²½ ìˆ«ì ì§€ì •
+#define FIXED_BLOCK 3 //ê³ ì •ëœ ë¸”ë¡ ìˆ«ì ì§€ì •
+#define CEILING 4 //ì²œì¥ ìˆ«ì ì§€ì •
+#define EFFECT 5 //ë¸”ë¡ ì‚¬ë¼ì§ˆ ë•Œ ë³„ëª¨ì–‘ìœ¼ë¡œ ì‚¬ë¼ì§€ëŠ” ì´í™íŠ¸
 
-//Àü¿ªº¯¼ö/////////////////////////////// 
-int Board[WIDTH][HEIGHT] = { 0 }; //°ÔÀÓ º¸µåÆÇ
-int PlayingBoard[WIDTH][HEIGHT] = { 0 }; //°ÔÀÓ ÁøÇàÁß º¸µåÆÇ
+//ì „ì—­ë³€ìˆ˜/////////////////////////////// 
+int Board[WIDTH][HEIGHT] = { 0 }; //ê²Œì„ ë³´ë“œíŒ
+int PlayingBoard[WIDTH][HEIGHT] = { 0 }; //ê²Œì„ ì§„í–‰ì¤‘ ë³´ë“œíŒ
 int Block[7][4][BLOCK_MAX][BLOCK_MAX] = {
 	{{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},
 	 {0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0},{0,0,0,0,0,1,1,0,0,1,1,0,0,0,0,0}},
@@ -45,44 +45,44 @@ int Block[7][4][BLOCK_MAX][BLOCK_MAX] = {
 	 {0,0,0,0,0,0,0,0,1,1,1,0,0,0,1,0},{0,0,0,0,0,1,1,0,0,1,0,0,0,1,0,0}},
 	{{0,0,0,0,0,1,0,0,1,1,1,0,0,0,0,0},{0,0,0,0,0,1,0,0,0,1,1,0,0,1,0,0},
 	 {0,0,0,0,0,0,0,0,1,1,1,0,0,1,0,0},{0,0,0,0,0,1,0,0,1,1,0,0,0,1,0,0}}
-}; //ºí·Ï ¸ğ¾ç ÀúÀå
-int bx = 4, by = 0; //ºí·ÏÀÇ ÁÂÇ¥
-int checkCrush = 0, rotation = 0; //¹Ù´Ú¿¡ ºÎµúÇû´ÂÁö/È¸Àü Ã¼Å©
-int checkNewBlock = 0; //»õ·Î¿î ºí·Ï »ı¼ºÇØ¾ß ÇÏ´ÂÁö Ã¼Å©
-int checkSpace = 0; //½ºÆäÀÌ½º¹Ù ´­·¶´ÂÁö Ã¼Å©
-int currentBlock = 0, nextBlock = 0; //»ı¼ºµÉ ºí·Ï/»ı¼ºÇÑ ºí·Ï
-int score = 0, level = 1, speed = 0, bestScore; //Á¡¼ö, ·¹º§, ¼Óµµ, ÃÖ°íÁ¡¼ö
-//ÇÔ¼ö///////////////////////////////////////
-void CursorView(char show); //Ä¿¼­ »ı¼º ¹× ¼Ò¸ê
-void GotoXY(int x, int y); //ÇØ´ç ÁÂÇ¥·Î ÀÌµ¿ÇÏ´Â ÇÔ¼ö
-void TextColor(int colorNum); //±ÛÀÚ »ö ¹Ù²Ş
-void NextBlockColor(int blockColor); //´ÙÀ½ ºí·Ï »ö ÁöÁ¤
-void PlayBGM(void); //°ÔÀÓ bgm Àç»ı
+}; //ë¸”ë¡ ëª¨ì–‘ ì €ì¥
+int bx = 4, by = 0; //ë¸”ë¡ì˜ ì¢Œí‘œ
+int checkCrush = 0, rotation = 0; //ë°”ë‹¥ì— ë¶€ë”ªí˜”ëŠ”ì§€/íšŒì „ ì²´í¬
+int checkNewBlock = 0; //ìƒˆë¡œìš´ ë¸”ë¡ ìƒì„±í•´ì•¼ í•˜ëŠ”ì§€ ì²´í¬
+int checkSpace = 0; //ìŠ¤í˜ì´ìŠ¤ë°” ëˆŒë €ëŠ”ì§€ ì²´í¬
+int currentBlock = 0, nextBlock = 0; //ìƒì„±ë  ë¸”ë¡/ìƒì„±í•œ ë¸”ë¡
+int score = 0, level = 1, speed = 0, bestScore; //ì ìˆ˜, ë ˆë²¨, ì†ë„, ìµœê³ ì ìˆ˜
+//í•¨ìˆ˜///////////////////////////////////////
+void CursorView(char show); //ì»¤ì„œ ìƒì„± ë° ì†Œë©¸
+void GotoXY(int x, int y); //í•´ë‹¹ ì¢Œí‘œë¡œ ì´ë™í•˜ëŠ” í•¨ìˆ˜
+void TextColor(int colorNum); //ê¸€ì ìƒ‰ ë°”ê¿ˆ
+void NextBlockColor(int blockColor); //ë‹¤ìŒ ë¸”ë¡ ìƒ‰ ì§€ì •
+void PlayBGM(void); //ê²Œì„ bgm ì¬ìƒ
 
-void ResetGame(); //°ÔÀÓ ÀüÃ¼ ÃÊ±âÈ­
-void InitTitle(void); //ÃÊ±â °ÔÀÓ »óÅÂ
-void InitBoard(void); //º¸µåÆÇ ÃÊ±âÈ­
-void InitBlock(void); //ºí·° ÃÊ±âÈ­
-void InitPlayingBoard(void); //º¹»çµÈ º¸µåÆÇ ÃÊ±âÈ­
-void InitInformation(void); //Á¶ÀÛ¹ı ½ºÅ©¸°¿¡ ¶ç¿ò
-void PauseGame(void); //p¸¦ ´­·¶À» ¶§ °ÔÀÓ ÀÏ½ÃÁ¤Áö
-void GameProcess(void); //°ÔÀÓ ÁøÇà°úÁ¤
+void ResetGame(); //ê²Œì„ ì „ì²´ ì´ˆê¸°í™”
+void InitTitle(void); //ì´ˆê¸° ê²Œì„ ìƒíƒœ
+void InitBoard(void); //ë³´ë“œíŒ ì´ˆê¸°í™”
+void InitBlock(void); //ë¸”ëŸ­ ì´ˆê¸°í™”
+void InitPlayingBoard(void); //ë³µì‚¬ëœ ë³´ë“œíŒ ì´ˆê¸°í™”
+void InitInformation(void); //ì¡°ì‘ë²• ìŠ¤í¬ë¦°ì— ë„ì›€
+void PauseGame(void); //pë¥¼ ëˆŒë €ì„ ë•Œ ê²Œì„ ì¼ì‹œì •ì§€
+void GameProcess(void); //ê²Œì„ ì§„í–‰ê³¼ì •
 
-void ProcessBoard(void); //°ÔÀÓ ÁøÇà Áß »óÅÂ
-void CreateScreen(void); //º¸µåÆÇ ±×¸®±â
+void ProcessBoard(void); //ê²Œì„ ì§„í–‰ ì¤‘ ìƒíƒœ
+void CreateScreen(void); //ë³´ë“œíŒ ê·¸ë¦¬ê¸°
 
-void CreateNewBlock(void); //·£´ıÀ¸·Î »õ·Î¿î ºí·° »ı¼ºÇÔ
-void DropBlock(void); //º¸µåÆÇ¿¡ ºí·° ³õ±â
+void CreateNewBlock(void); //ëœë¤ìœ¼ë¡œ ìƒˆë¡œìš´ ë¸”ëŸ­ ìƒì„±í•¨
+void DropBlock(void); //ë³´ë“œíŒì— ë¸”ëŸ­ ë†“ê¸°
 
-void MoveKey(void); //¹æÇâÅ°
-void MoveBlock(int direction); //¹æÇâÅ° ¹æÇâÀ¸·Î ºí·°À» ÀÌµ¿½ÃÅ²´Ù.
+void MoveKey(void); //ë°©í–¥í‚¤
+void MoveBlock(int direction); //ë°©í–¥í‚¤ ë°©í–¥ìœ¼ë¡œ ë¸”ëŸ­ì„ ì´ë™ì‹œí‚¨ë‹¤.
 
-void RemoveBlockShape(void); //ºí·Ï ÀÜ»óÀ» ¾ø¾ÖÁÜ
-void FixBlockShape(void); //ºí·Ï º¸µå¿¡ °íÁ¤ÇÔ
+void RemoveBlockShape(void); //ë¸”ë¡ ì”ìƒì„ ì—†ì• ì¤Œ
+void FixBlockShape(void); //ë¸”ë¡ ë³´ë“œì— ê³ ì •í•¨
 
-int CheckCollision(int bx, int by, int rotate); //ºí·ÏÀÌ º®¿¡ ºÎµúÇûÀ» ¶§ ³ª°¡Áö ¾Ê°Ô ÇØÁÜ
-void CheckLine(void); //ÇÑ ÁÙ ¾ø¾îÁú ¼ö ÀÖ´ÂÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö
-int CheckGameOver(void); //°ÔÀÓÀÌ ³¡³µ´ÂÁö Ã¼Å©ÇØÁÖ´Â ÇÔ¼ö
-void LevelUpScreen(void); //·¹º§¾÷ ÇÏ¸é È­¸é Ãâ·Â
-void GameOverScreen(void); //°ÔÀÓ ¿À¹ö µÇ¾úÀ» ¶§ Ãâ·ÂµÇ´Â ½ºÅ©¸°
+int CheckCollision(int bx, int by, int rotate); //ë¸”ë¡ì´ ë²½ì— ë¶€ë”ªí˜”ì„ ë•Œ ë‚˜ê°€ì§€ ì•Šê²Œ í•´ì¤Œ
+void CheckLine(void); //í•œ ì¤„ ì—†ì–´ì§ˆ ìˆ˜ ìˆëŠ”ì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜
+int CheckGameOver(void); //ê²Œì„ì´ ëë‚¬ëŠ”ì§€ ì²´í¬í•´ì£¼ëŠ” í•¨ìˆ˜
+void LevelUpScreen(void); //ë ˆë²¨ì—… í•˜ë©´ í™”ë©´ ì¶œë ¥
+void GameOverScreen(void); //ê²Œì„ ì˜¤ë²„ ë˜ì—ˆì„ ë•Œ ì¶œë ¥ë˜ëŠ” ìŠ¤í¬ë¦°
 #endif
