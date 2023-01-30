@@ -2,8 +2,8 @@
 This program is a console game created using C language. 
 
 ## Introduce of Program
-- 'main.c'
-- 'tetris.h'
+- `main.c`
+- `tetris.h`
 
 To smoothly operate the program, You must have the highest score text file(txt) and bgm file(wav) in the same folder as tetris game.
 
@@ -20,16 +20,16 @@ To smoothly operate the program, You must have the highest score text file(txt) 
 2023. 01. 24 ~ 01. 31 (8 days)
 
 ## Language Used
-'C language'
+`C language`
 
--
+
 
 # 테트리스
 C언어를 사용한 콘솔 게임입니다.
 
 ## 프로그램 소개
-- 'main.c'
-- 'tetris.h'
+- `main.c`
+- `tetris.h`
 
 프로그램이 원활하게 작동되기 위해서는 최고 점수 파일(txt)과 bgm 파일(wav)가 테트리스 게임과 동일한 폴더에 반드시 있어어 합니다.
 
@@ -44,4 +44,4 @@ C언어를 사용한 콘솔 게임입니다.
 2023. 01. 24 ~ 01. 31 (8일)
 
 ## 사용 언어
-'C언어'
+`C언어`
