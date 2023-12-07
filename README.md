@@ -48,4 +48,5 @@ C언어를 사용한 콘솔 게임입니다.
 ## 사용 언어
 `C언어`
 
-![테트리스 시연 영상](https://github.com/eccho03/Tetris/assets/108281892/4f5beaae-4531-4635-8046-50e56eb01abb){: width="800" height="400"}
+<img src="https://github.com/eccho03/Tetris/assets/108281892/4f5beaae-4531-4635-8046-50e56eb01abb" width="800" height="400">
+
