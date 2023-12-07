@@ -48,7 +48,6 @@ C언어를 사용한 콘솔 게임입니다.
 
 
 
-
-![테트리스 최종](https://github.com/eccho03/Tetris/assets/108281892/18b0c5e9-915f-457b-a308-e966f6fa85c2)
+<img src="(https://github.com/eccho03/Tetris/assets/108281892/18b0c5e9-915f-457b-a308-e966f6fa85c2)"  width="200" height="400"/>
 
 
