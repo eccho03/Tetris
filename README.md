@@ -50,6 +50,4 @@ C언어를 사용한 콘솔 게임입니다.
 
 
 
-<img src="(https://github.com/eccho03/Tetris/assets/108281892/af1bc479-fe6d-4252-9b3e-beb4fdcf6b14)"  width="800" height="400"/>
-
-
+<img src="(https://github.com/eccho03/Tetris/assets/108281892/4f5beaae-4531-4635-8046-50e56eb01abb)"  width="800" height="400"/>
